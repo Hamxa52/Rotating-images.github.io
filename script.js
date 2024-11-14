@@ -1,51 +1,48 @@
 const photoCards = document.querySelectorAll('.photo-card');
-        let angle = 0;
+let angle = 0;
 
-        function rotateImages() {
-            photoCards.forEach((photo, index) => {
-                const rotationAngle = angle + index * 45;
-                photo.style.transform = `rotateY(${rotationAngle}deg) translateZ(250px)`;
+// Function to rotate images
+function rotateImages() {
+    photoCards.forEach((photo, index) => {
+        const rotationAngle = angle + index * 45;
+        photo.style.transform = `rotateY(${rotationAngle}deg) translateZ(250px)`;
 
-                const normalizedAngle = (rotationAngle % 360 + 360) % 360;
-                photo.style.opacity = normalizedAngle > 90 && normalizedAngle < 270 ? 0 : 1;
-            });
-        }
+        // Hide photos on the back side
+        const normalizedAngle = (rotationAngle % 360 + 360) % 360;
+        photo.style.opacity = normalizedAngle > 90 && normalizedAngle < 270 ? 0 : 1;
+    });
+}
 
-        setInterval(() => {
-            angle += 45;
-            rotateImages();
-        }, 2000);
+// Interval for automatic rotation
+setInterval(() => {
+    angle += 45;
+    rotateImages();
+}, 2000);
 
-        // Event handling for drag on desktops and touch on mobile
-        let startX, isDragging = false;
+// Loader
+window.addEventListener("load", () => {
+    document.getElementById("loaderOverlay").classList.add("hidden");
+});
 
-        function startRotate(event) {
-            isDragging = true;
-            startX = event.clientX || event.touches[0].clientX;
-        }
+// Modal functionality
+const modal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
 
-        function rotateMove(event) {
-            if (isDragging) {
-                const currentX = event.clientX || event.touches[0].clientX;
-                const deltaX = currentX - startX;
-                angle -= deltaX * 0.1;
-                rotateImages();
-                startX = currentX;
-            }
-        }
+photoCards.forEach((photo) => {
+    photo.addEventListener("click", () => {
+        modalImage.style.backgroundImage = photo.style.backgroundImage;
+        modal.classList.add("show");
+    });
+});
 
-        function endRotate() {
-            isDragging = false;
-        }
+// Close modal on click
+modal.addEventListener("click", () => {
+    modal.classList.remove("show");
+});
 
-        const gallery = document.querySelector('.photo-gallery');
-        gallery.addEventListener('mousedown', startRotate);
-        gallery.addEventListener('mousemove', rotateMove);
-        document.addEventListener('mouseup', endRotate);
-        gallery.addEventListener('touchstart', startRotate);
-        gallery.addEventListener('touchmove', rotateMove);
-        gallery.addEventListener('touchend', endRotate);
-
-        window.addEventListener("load", () => {
-            document.getElementById("loaderOverlay").classList.add("hidden");
-        });
+// Smoke effect based on mouse movement
+document.body.addEventListener('mousemove', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    document.body.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 0, 150, 0.2), transparent 60%), #000`;
+});

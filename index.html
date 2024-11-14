@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Rotating Photos Gallery with Loader</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+<body class="bg-black flex items-center justify-center min-h-screen">
+    <!-- Loader Overlay -->
     <div class="loader-overlay" id="loaderOverlay">
         <div class="loader"></div>
     </div>
-    <div class="animated-background"></div>
-    <div class="photo-gallery sm:w-96 sm:h-96">
+
+    <!-- Photo Gallery Container -->
+    <div class="photo-gallery">
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.06_89c12a58.jpg'); transform: rotateY(0deg) translateZ(250px);"></div>
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.07_430ac2ce.jpg'); transform: rotateY(45deg) translateZ(250px);"></div>
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.07_84817598.jpg'); transform: rotateY(90deg) translateZ(250px);"></div>
@@ -24,11 +26,15 @@
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.09_bf0020e1.jpg'); transform: rotateY(360deg) translateZ(250px);"></div>
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.09_eea2c649.jpg'); transform: rotateY(405deg) translateZ(250px);"></div>
         <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.10_60e3dbe3.jpg'); transform: rotateY(450deg) translateZ(250px);"></div>
-        <div class="photo-card" style="background-image: url('0098779.jpg'); transform: rotateY(495deg) translateZ(250px);"></div>
         <div class="photo-card" style="background-image: url('0098814.jpg'); transform: rotateY(540deg) translateZ(250px);"></div>
-        <div class="photo-card" style="background-image: url('0098859.jpg'); transform: rotateY(585deg) translateZ(250px);">
+        <div class="photo-card" style="background-image: url('0098859.jpg'); transform: rotateY(585deg) translateZ(250px);"></div>
     </div>
-    <script src="script.js">
-    </script>
+
+    <!-- Modal for Enlarged Image View -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content" id="modalImage"></div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
