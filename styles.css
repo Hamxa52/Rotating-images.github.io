@@ -68,7 +68,7 @@ body {
     bottom: -60px; /* Position the reflection below the photo */
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 50%; /* Adjust this value to control the size of the reflection */
     background: inherit; /* Inherit the background from the image */
     transform: scaleY(-1); /* Flip the reflection vertically */
     opacity: 0.3; /* Reduce opacity for a subtle reflection effect */
