@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rotating Photos Gallery with Loader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .loader-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            width: 60px;
+            height: 10px;
+            background: linear-gradient(90deg, rgba(255, 0, 150, 0.8), rgba(0, 150, 255, 0.8));
+            border-radius: 5px;
+            animation: loaderMove 1s ease-in-out infinite alternate;
+        }
+        @keyframes loaderMove {
+            0% { transform: translateX(-30px); }
+            100% { transform: translateX(30px); }
+        }
+        body {
+            background: linear-gradient(135deg, #1d1d1d, #000000);
+            overflow: hidden;
+        }
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 0, 150, 0.1), transparent 70%);
+            pointer-events: none;
+            animation: moveBackground 10s linear infinite alternate;
+            z-index: -1;
+        }
+        @keyframes moveBackground {
+            0% { transform: translate(-50px, -50px) scale(1.1); }
+            50% { transform: translate(50px, 50px) scale(1.2); }
+            100% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+        .photo-gallery {
+            perspective: 1000px;
+        }
+        .photo-card {
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            position: absolute;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 1s, opacity 0.5s;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .photo-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom right, rgba(255, 0, 150, 0.5), rgba(0, 150, 255, 0.5));
+            border-radius: 0.5rem;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader"></div>
+    </div>
+    <div class="animated-background"></div>
+    <div class="photo-gallery relative w-full h-full sm:w-96 sm:h-96 flex items-center justify-center">
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.06_89c12a58.jpg'); transform: rotateY(0deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.07_430ac2ce.jpg'); transform: rotateY(45deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.07_84817598.jpg'); transform: rotateY(90deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.07_ea608757.jpg'); transform: rotateY(135deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.08_4116139f.jpg'); transform: rotateY(180deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.08_a9826bf4.jpg'); transform: rotateY(225deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.08_c9efc70d.jpg'); transform: rotateY(270deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.09_35b39fe3.jpg'); transform: rotateY(315deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.09_bf0020e1.jpg'); transform: rotateY(360deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.09_eea2c649.jpg'); transform: rotateY(405deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('WhatsApp Image 2024-11-14 at 19.17.10_60e3dbe3.jpg'); transform: rotateY(450deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('0098779.jpg'); transform: rotateY(495deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('0098814.jpg'); transform: rotateY(540deg) translateZ(250px);"></div>
+        <div class="photo-card" style="background-image: url('0098859.jpg'); transform: rotateY(585deg) translateZ(250px);"></div>
+    </div>
+    <script>
+        const photoCards = document.querySelectorAll('.photo-card');
+        let angle = 0;
+
+        function rotateImages() {
+            photoCards.forEach((photo, index) => {
+                const rotationAngle = angle + index * 45;
+                photo.style.transform = `rotateY(${rotationAngle}deg) translateZ(250px)`;
+
+                const normalizedAngle = (rotationAngle % 360 + 360) % 360;
+                if (normalizedAngle > 90 && normalizedAngle < 270) {
+                    photo.style.opacity = 0;
+                } else {
+                    photo.style.opacity = 1;
+                }
+            });
+        }
+
+        setInterval(() => {
+            angle += 45;
+            rotateImages();
+        }, 2000);
+
+        let startX, isDragging = false;
+        document.querySelector('.photo-gallery').addEventListener('mousedown', (event) => {
+            isDragging = true;
+            startX = event.clientX;
+        });
+        document.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const deltaX = event.clientX - startX;
+                angle -= deltaX * 0.1;
+                rotateImages();
+                startX = event.clientX;
+            }
+        });
+        document.addEventListener('mouseup', () => { isDragging = false; });
+
+        window.addEventListener("load", () => {
+            const loaderOverlay = document.getElementById("loaderOverlay");
+            loaderOverlay.classList.add("hidden");
+        });
+    </script>
+</body>
+</html>
