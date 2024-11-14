@@ -47,13 +47,13 @@ body {
 }
 
 .photo-card {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 475px;
     background-size: cover;
     background-position: center;
     position: absolute;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Enhance the existing shadow */
     transform-style: preserve-3d;
     transition: transform 1s, opacity 0.5s;
     opacity: 1;
@@ -61,6 +61,21 @@ body {
     cursor: pointer;
 }
 
+/* Reflection Effect */
+.photo-card::after {
+    content: "";
+    position: absolute;
+    bottom: -60px; /* Position the reflection below the photo */
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: inherit; /* Inherit the background from the image */
+    transform: scaleY(-1); /* Flip the reflection vertically */
+    opacity: 0.3; /* Reduce opacity for a subtle reflection effect */
+    filter: blur(3px); /* Apply a slight blur for realism */
+    pointer-events: none; /* Prevent interaction with the reflection */
+    z-index: -1; /* Ensure reflection stays behind the card */
+}
 /* Modal Overlay */
 .modal {
     position: fixed;
